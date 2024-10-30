@@ -1,0 +1,132 @@
+<div class="form-container">
+    <h2>Formulaire d'inscription</h2>
+
+    <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+        <!-- Informations personnelles -->
+        <div formGroupName="personalInfo" class="form-section">
+            <h3>Informations personnelles</h3>
+
+            <div class="form-field">
+                <label>Prénom</label>
+                <input type="text" formControlName="firstName">
+                <div class="error" *ngIf="submitted && personalInfo.get('firstName')?.errors">
+                    <span *ngIf="personalInfo.get('firstName')?.errors?.['required']">Le prénom est requis</span>
+                    <span *ngIf="personalInfo.get('firstName')?.errors?.['minlength']">Le prénom doit contenir au moins
+                        2 caractères</span>
+                </div>
+
+                <p>{{ personalInfo.get('firstName')?.errors | json }}</p>
+
+                <h4>Validité</h4>
+                <!-- Le contrôle passe toutes les validations (tous les validateurs retournent null) -->
+                <p>valid: {{ personalInfo.get('firstName')?.valid }}</p>
+                <!-- Le contrôle ne passe pas au moins une validation -->
+                <p>invalid: {{ personalInfo.get('firstName')?.invalid }}</p>
+                <!-- Le contrôle est en cours de validation asynchrone (par exemple, vérifie si un username existe déjà via une API) -->
+                <p>pending: {{ personalInfo.get('firstName')?.pending }}</p>
+
+                <h4>Modification</h4>
+                <!-- Le contrôle n'a jamais été modifié depuis son initialisation -->
+                <p>pristine: {{ personalInfo.get('firstName')?.pristine }}</p>
+                <!-- Le contrôle a été modifié au moins une fois par l'utilisateur -->
+                <p>dirty: {{ personalInfo.get('firstName')?.dirty }}</p>
+
+                <h4>Interaction</h4>
+                <!-- L'utilisateur n'a pas encore interagi avec le contrôle (n'a pas encore fait focus puis blur) -->
+                <p>untouched: {{ personalInfo.get('firstName')?.untouched }}</p>
+                <!-- L'utilisateur a interagi avec le contrôle (a fait focus puis blur dessus) -->
+                <p>touched: {{ personalInfo.get('firstName')?.touched }}</p>
+
+            </div>
+
+            <div class="form-field">
+                <label>Nom</label>
+                <input type="text" formControlName="lastName">
+                <div class="error" *ngIf="submitted && personalInfo.get('lastName')?.errors">
+                    <span *ngIf="personalInfo.get('lastName')?.errors?.['required']">Le nom est requis</span>
+                    <span *ngIf="personalInfo.get('lastName')?.errors?.['minlength']">Le nom doit contenir au moins 2
+                        caractères</span>
+                </div>
+            </div>
+
+            <div class="form-field">
+                <label>Email</label>
+                <input type="email" formControlName="email">
+                <div class="error" *ngIf="submitted && personalInfo.get('email')?.errors">
+                    <span *ngIf="personalInfo.get('email')?.errors?.['required']">L'email est requis</span>
+                    <span *ngIf="personalInfo.get('email')?.errors?.['email']">L'email n'est pas valide</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Adresse -->
+        <div formGroupName="address" class="form-section">
+            <h3>Adresse</h3>
+
+            <div class="form-field">
+                <label>Rue</label>
+                <input type="text" formControlName="street">
+                <div class="error" *ngIf="submitted && address.get('street')?.errors?.['required']">
+                    La rue est requise
+                </div>
+            </div>
+
+            <div class="form-field">
+                <label>Ville</label>
+                <input type="text" formControlName="city">
+                <div class="error" *ngIf="submitted && address.get('city')?.errors?.['required']">
+                    La ville est requise
+                </div>
+            </div>
+
+            <div class="form-field">
+                <label>Code postal</label>
+                <input type="text" formControlName="postalCode">
+                <div class="error" *ngIf="submitted && address.get('postalCode')?.errors">
+                    <span *ngIf="address.get('postalCode')?.errors?.['required']">Le code postal est requis</span>
+                    <span *ngIf="address.get('postalCode')?.errors?.['pattern']">Le code postal doit contenir 5
+                        chiffres</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mot de passe -->
+        <div class="form-section">
+            <h3>Sécurité</h3>
+
+            <div class="form-field">
+                <label>Mot de passe</label>
+                <input type="password" formControlName="password">
+                <div class="error" *ngIf="submitted && f['password']?.errors">
+                    <div *ngIf="f['password']?.errors?.['required']">Le mot de passe est requis</div>
+                    <div *ngIf="f['password']?.errors?.['minlength']">Le mot de passe doit contenir au moins 8 caractères</div>
+                    <div *ngIf="f['password']?.errors?.['digit']"> {{ f['password'].errors?.['digit'].message }} </div>
+                    <div *ngIf="f['password']?.errors?.['uppercase']"> {{ f['password'].errors?.['uppercase'].message }} </div>
+                    <div *ngIf="f['password']?.errors?.['lowercase']"> {{ f['password'].errors?.['lowercase'].message }} </div>
+                    <div *ngIf="f['password']?.errors?.['specialChar']"> {{ f['password'].errors?.['specialChar'].message }} </div>
+                </div>
+            </div>
+
+            <div class="form-field">
+                <label>Confirmer le mot de passe</label>
+                <input type="password" formControlName="confirmPassword">
+                <div class="error" *ngIf="submitted && f['confirmPassword']?.errors">
+                    <span *ngIf="f['confirmPassword']?.errors?.['required']">La confirmation du mot de passe est
+                        requise</span>
+                    <span *ngIf="f['confirmPassword']?.errors?.['passwordMismatch']">Les mots de passe ne correspondent
+                        pas</span>
+                </div>
+            </div>
+
+
+            <p>{{ f['password'].errors | json }}</p>
+            <p>{{ userForm.get('confirmPassword')?.errors | json }}</p>
+
+        </div>
+
+        <div class="form-actions">
+            <button type="submit">S'inscrire</button>
+            <button type="button" (click)="resetForm()">Réinitialiser</button>
+        </div>
+    </form>
+</div>
